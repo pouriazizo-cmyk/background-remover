@@ -1,0 +1,43 @@
+<!-- About page template -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درباره ما - حذف کننده بک‌گراند</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ℹ️ درباره سرویس ما</h1>
+            <a href="{{ url_for('index') }}" class="btn-secondary">بازگشت به صفحه اصلی</a>
+        </header>
+
+        <div class="about-content">
+            <h2>✨ ویژگی‌های سرویس</h2>
+            <div class="features-list">
+                <div class="feature-item">
+                    <h3>🔐 API Key اختصاصی</h3>
+                    <p>استفاده از API Key شخصی برای کیفیت و سرعت بالاتر</p>
+                </div>
+                <div class="feature-item">
+                    <h3>⚡ پردازش ابری</h3>
+                    <p>استفاده از سرورهای قدرتمند برای حذف بک‌گراند</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🛡️ حریم خصوصی</h3>
+                    <p>تصاویر شما بعد از 1 ساعت به طور خودکار حذف می‌شوند</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🌐 همیشه فعال</h3>
+                    <p>سیستم پینگ خودکار تضمین می‌کند سرور همیشه بیدار است</p>
+                </div>
+            </div>
+
+            <h2>📞 پشتیبانی</h2>
+            <p>در صورت وجود هرگونه مشکل یا سؤال، با ما در تماس باشید.</p>
+        </div>
+    </div>
+</body>
+</html>

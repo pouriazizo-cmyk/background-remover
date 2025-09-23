@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حذف بک‌گراند تصاویر</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 حذف کننده بک‌گراند تصاویر</h1>
+            <p>تصویر خود را آپلود کنید و بک‌گراند آن را به صورت رایگان حذف کنید</p>
+        </header>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="upload-area">
+            <!-- فرم با آیدی uploadForm -->
+            <form action="/remove-bg" method="post" enctype="multipart/form-data" id="uploadForm">
+                <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                    <input type="file" id="fileInput" name="image" accept="image/*" hidden>
+                    <div class="upload-content">
+                        <span class="upload-icon">📁</span>
+                        <h3>برای آپلود کلیک کنید یا تصویر را اینجا بکشید</h3>
+                        <p>فرمت‌های مجاز: PNG, JPG, JPEG, WEBP (حداکثر 16MB)</p>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" id="submitBtn" disabled>
+                    حذف بک‌گراند
+                </button>
+            </form>
+        </div>
+
+        <div class="features">
+            <h2>✨ ویژگی‌ها</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <span>⚡</span>
+                    <h3>سریع و آسان</h3>
+                    <p>پردازش در کمتر از 30 ثانیه</p>
+                </div>
+                <div class="feature">
+                    <span>🆓</span>
+                    <h3>کاملاً رایگان</h3>
+                    <p>هیچ هزینه‌ای برای استفاده ندارید</p>
+                </div>
+                <div class="feature">
+                    <span>🔒</span>
+                    <h3>محافظت از حریم خصوصی</h3>
+                    <p>تصاویر شما بعد از 1 ساعت حذف می‌شوند</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initializeForm() {
+            const fileInput = document.getElementById('fileInput');
+            const uploadForm = document.getElementById('uploadForm');
+            const uploadBox = document.querySelector('.upload-box');
+            const submitBtn = document.getElementById('submitBtn');
+
+            console.log('🔍 فرم اولیه:', uploadForm);
+
+            // Event listener برای فرم
+            uploadForm.addEventListener('submit', function(e) {
+                console.log('🎯 فرم در حال ارسال است...');
+                
+                if (!fileInput.files.length) {
+                    e.preventDefault();
+                    alert('لطفاً یک تصویر انتخاب کنید');
+                    return;
+                }
+                
+                // نمایش loading
+                const loadingHTML = `
+                    <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; display:flex; justify-content:center; align-items:center;">
+                        <div style="background:white; padding:40px; border-radius:15px; text-align:center; max-width:400px;">
+                            <div style="font-size:60px; margin-bottom:20px;">⏳</div>
+                            <h3 style="margin-bottom:10px;">در حال حذف بک‌گراند...</h3>
+                            <p style="color:#666;">لطفاً شکیبا باشید. این عملیات ممکن است 10-30 ثانیه طول بکشد.</p>
+                        </div>
+                    </div>
+                `;
+                document.body.insertAdjacentHTML('beforeend', loadingHTML);
+            });
+
+            // مدیریت انتخاب فایل
+            fileInput.addEventListener('change', function(e) {
+                console.log('📁 فایل انتخاب شد:', this.files[0]);
+                
+                if (this.files.length > 0) {
+                    submitBtn.disabled = false;
+                    const file = this.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        // مخفی کردن آپلود باکس و دکمه اصلی
+                        uploadBox.style.display = 'none';
+                        submitBtn.style.display = 'none'; // این خط رو اضافه کن
+                        
+                        const previewHTML = `
+                            <div class="preview" style="text-align: center; padding: 20px;">
+                                <img src="${e.target.result}" alt="Preview" style="max-width: 300px; max-height: 300px; border-radius: 10px; margin-bottom: 15px;">
+                                <p style="margin-bottom: 20px; font-size: 16px;">${file.name}<br>(${(file.size / 1024 / 1024).toFixed(1)} MB)</p>
+                                <div style="display: flex; gap: 10px; justify-content: center;">
+                                    <button type="submit" class="btn-primary" style="margin: 0;">حذف بک‌گراند</button>
+                                    <button type="button" class="btn-secondary" onclick="location.reload()" style="margin: 0;">انتخاب تصویر دیگر</button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // اضافه کردن پیش‌نمایش بعد از فرم
+                        uploadForm.insertAdjacentHTML('beforeend', previewHTML);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Drag and Drop
+            uploadBox.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            uploadBox.addEventListener('dragleave', function() {
+                this.classList.remove('dragover');
+            });
+
+            uploadBox.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            });
+        }
+
+        // وقتی صفحه لود شد
+        document.addEventListener('DOMContentLoaded', initializeForm);
+    </script>
+
+    <footer style="text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #eee; font-size: 0.9em;">
+        <p>
+            <a href="{{ url_for('about') }}" style="color: #667eea; text-decoration: none;">درباره ما</a> | 
+            <a href="/ping" style="color: #667eea; text-decoration: none;">بررسی وضعیت سرور</a>
+        </p>
+    </footer>
+</body>
+</html>

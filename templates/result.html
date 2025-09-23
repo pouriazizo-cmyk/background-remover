@@ -1,0 +1,47 @@
+<!-- Result page template -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتیجه حذف بک‌گراند</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✅ بک‌گراند با موفقیت حذف شد!</h1>
+            <a href="{{ url_for('index') }}" class="btn-secondary">آپلود تصویر جدید</a>
+        </header>
+
+        <div class="result-container">
+            <div class="image-comparison">
+                <div class="image-box">
+                    <h3>تصویر اصلی</h3>
+                    <img src="{{ original_image }}" alt="تصویر اصلی">
+                </div>
+                <div class="image-box">
+                    <h3>تصویر بدون بک‌گراند</h3>
+                    <img src="{{ result_image }}" alt="تصویر بدون بک‌گراند">
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="{{ url_for('download_file', filename=filename) }}" class="btn-primary">
+                    📥 دانلود تصویر
+                </a>
+                <a href="{{ url_for('index') }}" class="btn-secondary">
+                    🔄 آپلود تصویر جدید
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #eee; font-size: 0.9em;">
+        <p>
+            <a href="{{ url_for('about') }}" style="color: #667eea; text-decoration: none;">درباره ما</a> | 
+            <a href="/ping" style="color: #667eea; text-decoration: none;">بررسی وضعیت سرور</a>
+        </p>
+    </footer>
+</body>
+</html>
