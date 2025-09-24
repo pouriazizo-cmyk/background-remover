@@ -2,14 +2,11 @@
 services:
   - type: web
     name: background-remover-pro
-    env: python
+    env: docker
     plan: free
-    buildCommand: chmod +x build.sh && ./build.sh
-    startCommand: ./start.sh
+    dockerfilePath: ./Dockerfile
     envVars:
       - key: REM_BG_API_KEY
         value: b555c5ef-173d-45e7-8526-bd12490403f8
       - key: SECRET_KEY
         generateValue: true
-      - key: PYTHON_VERSION
-        value: 3.10.0
