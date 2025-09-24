@@ -6,10 +6,11 @@ services:
     plan: free
     buildCommand: chmod +x build.sh && ./build.sh
     startCommand: ./start.sh
+    port: 8000
     envVars:
       - key: REM_BG_API_KEY
         value: b555c5ef-173d-45e7-8526-bd12490403f8
       - key: SECRET_KEY
         generateValue: true
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.10.0
