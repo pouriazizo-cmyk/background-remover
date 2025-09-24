@@ -7,4 +7,4 @@ export ENVIRONMENT=production
 
 # شروع برنامه
 echo "🚀 Starting Background Remover App with Auto-Ping..."
-gunicorn --bind 0.0.0.0:8000 --preload app:app
+gunicorn --bind 0.0.0.0:$PORT --preload app:app
