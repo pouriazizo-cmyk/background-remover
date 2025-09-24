@@ -6,7 +6,6 @@ services:
     plan: free
     buildCommand: chmod +x build.sh && ./build.sh
     startCommand: ./start.sh
-    port: 8000
     envVars:
       - key: REM_BG_API_KEY
         value: b555c5ef-173d-45e7-8526-bd12490403f8
